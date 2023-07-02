@@ -3,6 +3,7 @@ from typing import Type, Union
 from connect_serial.utils.codes_buffer import COMMANDS
 from connect_serial.utils.get_date import get_date_now
 from connect_serial.utils.transform_data import trasnform_data_to_ordinal
+from aws_iot.utils.iot_codes import IDP_MESSAGES
 
 
 class SendComands:
@@ -16,12 +17,14 @@ class SendComands:
         self.__radio_id: int = None
         self.__intention: str = None
 
-    def __config_class_params(self, msg:str) -> None:
+    def __config_class_params(self, radio_id, msg:str) -> None:
         ''' Config params received from request in class params'''
-        [idp, radio, status, percent, timestamp, user] = msg.split('-')
-        self.__radio_id = radio
+        [status, percent, timestamp, user] = msg.split('-')
+        self.author = user
+        self.__radio_id = radio_id 
+        self.idp = IDP_MESSAGES["comands"]
         # self.__intention = f"#1-{radio}-{status}-{percent}-{timestamp}$" # Novo padrão
-        self.__intention = f"#{status}-{percent}-{timestamp}$"
+        self.__intention = f"#{self.idp}-{'-'.join([status, percent, timestamp])}$"
         
     def __reset_params(self) -> None:
         ''' Reset class parasm from a None datas'''
@@ -37,12 +40,11 @@ class SendComands:
             print(error)
             raise SerialError
 
-    async def start(self, msg: str) -> None:
+    async def start(self,radio_id, msg: str) -> None:
         ''' Config parameters for data global in this class'''
-        self.__config_class_params(msg)
+        self.__config_class_params(radio_id, msg)
 
         self.__send_msg = trasnform_data_to_ordinal(self.__intention)
-        print(f"gravando na porta serial {self.__send_msg}")
 
         byte_received: bytearray = await self.__infra.start(self.__cmd, self.__radio_id, self.__send_msg)
 

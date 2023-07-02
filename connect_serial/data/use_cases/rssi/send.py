@@ -16,8 +16,7 @@ class SendRssi:
             print(f"{get_date_now()} -> {message}")
             print(error)
 
-    async def start(self, msg: str) -> None:
-        [idp, radio_id] = message.split('-')
+    async def start(self, radio_id) -> None:
         byte_response: bytearray = await self.__handle_bytes.start(self.__cmd, radio_id, [0])
         await self.__write_serial(byte_response)
         

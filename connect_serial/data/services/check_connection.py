@@ -23,7 +23,7 @@ class CheckConnection:
             if(self.attempts >= 3):
                 raise Exception("Não existe Conexão com porta serial")
             else:
-                is_open = self.serial.is_open()
+                is_open = self.serial.is_open
                 if not is_open:
                     print("Conexão serial está fechada")
                     await self.__try_open_connect()

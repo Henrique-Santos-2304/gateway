@@ -16,6 +16,11 @@ class WriteDataSerial:
     async def start(self, data: Generic[T]) -> any:
         try:
             await self.serial_check.check()
+            
+            if not self.serial:
+                print("Nenhuma conexão serial aberta")
+                return
+            
             self.serial.reset_input_buffer()
             print(
                 f"\n{get_date_now()} -> Gravando dados na porta serial... \n{data}")
@@ -24,5 +29,5 @@ class WriteDataSerial:
             print("Dados gravados com sucesso....\n")
 
         except Exception as error:
-            print(f"{date.get_date_now()} -> Erro na gravação de dados  Serial")
+            print(f"{get_date_now()} -> Erro na gravação de dados  Serial")
             print(f"{error} \n")

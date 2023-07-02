@@ -1,9 +1,10 @@
 IDP_MESSAGES = {
-    "status":  100,
-    "comands": 101,
-    "rssi": 102,
-    "trace_route": 103,
-    "noise": 104,
-    "map": 105
+    "status":  "0",
+    "comands": "1",
+    "initial_data": "1000",
+    "rssi": "1001",
+    "trace_route": "1002",
+    "noise": "1003",
+    "map": "1004"
 }
 

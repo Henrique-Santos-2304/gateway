@@ -7,8 +7,7 @@ class SendNoise:
         self.__handle_bytes = handle_bytes
         self.__cmd = COMMANDS.get("CMD_READNOISE")[0]
         
-    async def start(self, message: str) -> None:
-        [idp, radio_id] = message.split('-')
-        byte_response: bytearray = await self.handle_bytes.start(self.cmd, radio_id, [0])
+    async def start(self, radio_id) -> None:
+        byte_response: bytearray = await self.__handle_bytes.start(self.__cmd, radio_id, [0])
 
         await self.__serial_write.start(byte_response)

@@ -1,19 +1,20 @@
 # Import SDK packages
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
+from local_settings import AWS_CA, AWS_PORT, AWS_URL, AWS_KEY,AWS_CRT, CLIENT_ID
 from time import sleep
 
 class MqttClient:
     
     def __init__(self):
-        self.myMQTTClient = AWSIoTMQTTClient("agri_henri_0")
+        self.myMQTTClient = AWSIoTMQTTClient(CLIENT_ID)
         self.__config()
         self.__start()
         
 
     def __config(self):
         try:
-            self.myMQTTClient.configureEndpoint('a19mijesri84u2-ats.iot.us-east-1.amazonaws.com', 8883)
-            self.myMQTTClient.configureCredentials("aws_iot/keys/amazon_ca.pem", "aws_iot/keys/private.pem.key", "aws_iot/keys/device.pem.crt")
+            self.myMQTTClient.configureEndpoint(AWS_URL, AWS_PORT)
+            self.myMQTTClient.configureCredentials(AWS_CA, AWS_KEY , AWS_CRT)
             self.myMQTTClient.configureOfflinePublishQueueing(-1)  
             self.myMQTTClient.configureDrainingFrequency(2) 
             self.myMQTTClient.configureConnectDisconnectTimeout(10) 
